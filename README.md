@@ -13,7 +13,7 @@ Particles to test lambda-formation with the Lambda service.
 1. Run the Mock API stack
 2. Use the STAGE url from the API created step 1 to launch many elastigroup stacks
 
-|region||Stack|Launch|
+|region|Stack|Launch|
 |------|---------|------|---------|
 |us-east-1|Mock API|[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=particles-rancher-instance&templateURL=https://s3.amazonaws.com/condensation-particles.us-east-1/particles-lf-tests/particles/cftemplates/spotinst/mock_api.template.json)
 |us-east-1|Mock ElastiGroup|[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=particles-rancher-instance&templateURL=https://s3.amazonaws.com/condensation-particles.us-east-1/particles-lf-tests/particles/cftemplates/spotinst/elastigroup.template.json)
