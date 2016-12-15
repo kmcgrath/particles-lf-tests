@@ -1,5 +1,5 @@
 {{#layout}}
-  {{parameter "m:core" "base" type="String" logicalId="RestUrl"}}
+  {{parameter "m:core" "base" type="String" logicalId="RestUrl" description="Do NOT include trailing forward slash"}}
 
   {{resource "m:lambda" "function/execution_role" logicalId="LambdaExecutionRole"}}
 
