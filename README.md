@@ -11,11 +11,13 @@
 ## Mock Tests - Spotinst
 
 1. Run the Mock API stack - this uses SAM to be sure to enable capabilities and create a change set
-2. Use the STAGE url from the API created step 1 to launch many elastigroup stacks
+2. Run LambdaFormation stack - this creates the ARN for the lambda used by CloudFormation Custom Resource - use STAGE url from step 1
+3. Launch many mock elastigroups with the ARN from step 2
 
 |region|Stack|Launch|
 |------|---------|------|---------|
 |us-east-1|Mock API|[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=lf-spotinst-mock-api&templateURL=https://s3.amazonaws.com/condensation-particles.us-east-1/particles-lf-tests/particles/cftemplates/spotinst/mock_api.template.json)
+|us-east-1|LF-Spotinst|[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=lf-spotinst-mock-api&templateURL=https://s3.amazonaws.com/condensation-particles.us-east-1/particles-lf-tests/particles/cftemplates/spotinst/lf.template.json)
 |us-east-1|Mock ElastiGroup|[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=lf-spotinst-mock-elastigroup&templateURL=https://s3.amazonaws.com/condensation-particles.us-east-1/particles-lf-tests/particles/cftemplates/spotinst/elastigroup.template.json)
 
 
