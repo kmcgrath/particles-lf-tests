@@ -1,0 +1,118 @@
+{{#layout}}
+  {{parameter "m:core" "base" type="String" logicalId="RestUrl"}}
+
+  {{resource "m:lambda" "function/execution_role" logicalId="LambdaExecutionRole"}}
+
+  {{#resource "m:spotinst-lambda" "lambda"
+    logicalId="SpotinstLambda"
+    role=(partial "m:core" "fn_get_att"
+    logicalId="LambdaExecutionRole"
+    attributeName="Arn")
+  }}
+    "Properties": {
+      "Environment": {
+        "Variables": {
+          "spotinst_lambda_restUrl": {{ref "RestUrl"}}
+        }
+      }
+    }
+  {{/resource}}
+
+  {{set "m:lambda" "function/all_outputs" functionLogicalId="SpotinstLambda"}}
+
+  {{#resource "m:core" "base" logicalId="ElastiGroup" type="Custom::elastigroup"}}
+    "Properties": {
+      "ServiceToken": {{partial "m:core" "fn_get_att" logicalId="SpotinstLambda" attributeName="Arn"}},
+      "accessToken": "fake",
+      "group": {
+        "compute": {
+            "product": "Linux/UNIX",
+            "instanceTypes": {
+                "spot": [
+                    "m3.2xlarge",
+                    "m4.2xlarge",
+                    "c3.2xlarge",
+                    "c4.2xlarge"
+                ],
+                "ondemand": "t2.large"
+            },
+            "launchSpecification": {
+                "imageId": "ami-11111111",
+                "networkInterfaces": [
+                    {
+                        "associatePublicIpAddress": "true",
+                        "deleteOnTermination": "true",
+                        "deviceIndex": "0"
+                    }
+                ],
+                "loadBalancerNames": [
+                    "HCDASDF-ASRED"
+                ],
+                "blockDeviceMappings": [
+                    {
+                        "ebs": {
+                            "volumeType": "gp2",
+                            "deleteOnTermination": "true",
+                            "volumeSize": "50"
+                        },
+                        "deviceName": "/dev/sdb"
+                    },
+                    {
+                        "ebs": {
+                            "volumeType": "gp2",
+                            "deleteOnTermination": "true",
+                            "volumeSize": "24"
+                        },
+                        "deviceName": "/dev/xvda"
+                    }
+                ],
+                "securityGroupIds": [
+                    "sg-ca1117ba"
+                ],
+                "keyPair": "fake_keypair",
+                "monitoring": "false",
+                "tags": [
+                  {
+                    "tagKey": "Environment",
+                    "tagValue": "mockenv"
+                  },
+                  {
+                    "tagKey": "Mock",
+                    "tagValue": "Yes"
+                  }
+                ]
+            },
+            "availabilityZones": [
+                {
+                    "name": "us-east-1b",
+                    "subnetId": "subnet-8e4c5909"
+                },
+                {
+                    "name": "us-east-1d",
+                    "subnetId": "subnet-eca8a9d3"
+                },
+                {
+                    "name": "us-east-1a",
+                    "subnetId": "subnet-6e477939"
+                }
+            ]
+        },
+        "scaling": {},
+        "name": "spotinst-group-ci-KPNKLATIVE",
+        "scheduling": {},
+        "description": "Development",
+        "strategy": {
+            "risk": "100",
+            "availabilityVsCost": "balanced"
+        },
+        "thirdPartiesIntegration": {},
+        "capacity": {
+            "maximum": "1",
+            "minimum": "1",
+            "target": "1"
+        }
+      }
+    }
+
+  {{/resource}}
+{{/layout}}

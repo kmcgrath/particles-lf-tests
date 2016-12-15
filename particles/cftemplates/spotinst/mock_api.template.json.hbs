@@ -1,0 +1,54 @@
+{{#layout Transform="AWS::Serverless-2016-10-31"}}
+
+  {{#resource "m:core" "base" logicalId="MockCreateSuccess" type="AWS::Serverless::Function"}}
+    "Properties": {
+      "Handler": "create_success.handler",
+      "CodeUri": "{{assetS3Url 'spotinst-mockapi.zip' protocol="s3"}}",
+      "Runtime": "nodejs4.3",
+      "Events": {
+        "CreateResource": {
+          "Type": "Api",
+          "Properties": {
+            "Path": "/aws/ec2/group",
+            "Method": "post"
+          }
+        }
+      }
+    }
+  {{/resource}}
+
+  {{#resource "m:core" "base" logicalId="MockDeleteSuccess" type="AWS::Serverless::Function"}}
+    "Properties": {
+      "Handler": "delete_success.handler",
+      "CodeUri": "{{assetS3Url 'spotinst-mockapi.zip' protocol="s3"}}",
+      "Runtime": "nodejs4.3",
+      "Events": {
+        "DeleteResource": {
+          "Type": "Api",
+          "Properties": {
+            "Path": "/aws/ec2/group/{id}",
+            "Method": "delete"
+          }
+        }
+      }
+    }
+  {{/resource}}
+
+  {{#resource "m:core" "base" logicalId="MockUpdateSuccess" type="AWS::Serverless::Function"}}
+    "Properties": {
+      "Handler": "update_success.handler",
+      "CodeUri": "{{assetS3Url 'spotinst-mockapi.zip' protocol="s3"}}",
+      "Runtime": "nodejs4.3",
+      "Events": {
+        "UpdateResource": {
+          "Type": "Api",
+          "Properties": {
+            "Path": "/aws/ec2/group/{id}",
+            "Method": "put"
+          }
+        }
+      }
+    }
+  {{/resource}}
+
+{{/layout}}
