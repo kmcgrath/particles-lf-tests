@@ -1,0 +1,10 @@
+{
+  "name": "spotinst-mockapi",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "keywords": [],
+  "dependencies": {
+    "shortid": "^2.2.6",
+    "uuid": "^3.0.1"
+  }
+}

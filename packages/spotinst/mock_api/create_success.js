@@ -1,8 +1,11 @@
+var shortid = require("shortid");
+var uuid = require("uuid/v4");
+
 module.exports.handler = function(event,context,cb) {
 
   var mockObj = {
     "request": {
-      "id": "9f61615c-c6f3-460b-b214-78321666e305",
+      "id": uuid(),
       "url": "/aws/ec2/group",
       "method": "POST",
       "timestamp": "2016-12-09T09:44:58.197Z"
@@ -15,7 +18,7 @@ module.exports.handler = function(event,context,cb) {
       "kind": "spotinst:aws:ec2:group",
       "items": [
         {
-          "id": "sig-c7e9w7pc",
+          "id": "sig-" + shortid.generate(),
           "name": "spotinst-group-ci-KPNKLATIVE",
           "description": "Development",
           "capacity": {
