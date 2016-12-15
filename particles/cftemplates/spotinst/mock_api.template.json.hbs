@@ -5,7 +5,7 @@
       "Handler": "create_success.handler",
       "CodeUri": "{{assetS3Url 'spotinst-mockapi.zip' protocol="s3"}}",
       "Runtime": "nodejs4.3",
-      "Timeout": "15",
+      "Timeout": 15,
       "Events": {
         "CreateResource": {
           "Type": "Api",
