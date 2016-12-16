@@ -42,7 +42,7 @@ var createStack = function() {
 };
 
 
-setInterval(createStack,5000);
+//setInterval(createStack,5000);
 
 
-//createStack();
+createStack();

@@ -3,24 +3,6 @@ var uuid = require("uuid/v4");
 var counter = require('dynamodb-atomic-counter');
 
 module.exports.handler = function(event,context,cb) {
-  console.log(event);
-
-  counter.config.update({region: 'us-east-1'});
-  /**
-   * Increment the "Users" counter. Make sure there's a table named
-   * "AtomicCounters", with "id" (string) as the primary hash key,
-   * in your AWS account.
-   */
-  counter.increment(event.body.group.name, {tableName: process.env.TABLE}).done(function (value) {
-    // `value` is the new incremented value.
-    if (value > 1) {
-      console.log("DUPLICATE CREATE: " + event.body.group.name)
-    }
-  }).fail(function (error) {
-    // An error occurred
-  }).always(function (valueOrError) {
-    // Executed whether or not the increment operation was successful
-  });
 
 
   var mockObj = {
@@ -146,12 +128,35 @@ module.exports.handler = function(event,context,cb) {
     }
   }
 
-  return cb(
-    null,
-    {
-      "statusCode": 200,
-      "body": JSON.stringify(mockObj)
+  var body = "{}";
+  try {
+    var body = JSON.parse(event.body);
+  }
+  catch(e) {
+    console.log(e);
+  }
+
+  counter.config.update({region: 'us-east-1'});
+  counter.increment(body.group.name, {tableName: process.env.TABLE}).done(function (value) {
+    // `value` is the new incremented value.
+    if (value > 1) {
+      console.log("MULTIPLE CREATE: " + body.group.name + " " + value)
     }
- );
+    else {
+      console.log("CREATE SUCCESSFUL:" + body.group.name);
+    }
+  }).fail(function (error) {
+    // An error occurred
+  }).always(function (valueOrError) {
+    // Executed whether or not the increment operation was successful
+      return cb(
+        null,
+        {
+          "statusCode": 200,
+          "body": JSON.stringify(mockObj)
+        }
+     );
+  });
+
 
 }
