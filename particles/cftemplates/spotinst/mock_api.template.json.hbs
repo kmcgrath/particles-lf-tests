@@ -1,11 +1,30 @@
 {{#layout Transform="AWS::Serverless-2016-10-31"}}
 
+  {{#resource "m:core" "base" logicalId="CreateCountTable" type="AWS::Serverless::SimpleTable"}}
+    "Properties": {
+      "PrimaryKey": {
+        "Name": "id",
+        "Type": "String"
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 2,
+        "WriteCapacityUnits": 2
+      }
+    }
+  {{/resource}}
+
   {{#resource "m:core" "base" logicalId="MockCreateSuccess" type="AWS::Serverless::Function"}}
     "Properties": {
       "Handler": "create_success.handler",
       "CodeUri": "{{assetS3Url 'spotinst-mockapi.zip' protocol="s3"}}",
       "Runtime": "nodejs4.3",
       "Timeout": 15,
+      "Policies": ["AmazonDynamoDBFullAccess"],
+      "Environment": {
+        "Variables": {
+          "TABLE": {{ref "CreateCountTable"}}
+        }
+      },
       "Events": {
         "CreateResource": {
           "Type": "Api",

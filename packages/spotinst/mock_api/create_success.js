@@ -1,7 +1,27 @@
 var shortid = require("shortid");
 var uuid = require("uuid/v4");
+var counter = require('dynamodb-atomic-counter');
 
 module.exports.handler = function(event,context,cb) {
+  console.log(event);
+
+  counter.config.update({region: 'us-east-1'});
+  /**
+   * Increment the "Users" counter. Make sure there's a table named
+   * "AtomicCounters", with "id" (string) as the primary hash key,
+   * in your AWS account.
+   */
+  counter.increment(event.body.group.name, {tableName: process.env.TABLE}).done(function (value) {
+    // `value` is the new incremented value.
+    if (value > 1) {
+      console.log("DUPLICATE CREATE: " + event.body.group.name)
+    }
+  }).fail(function (error) {
+    // An error occurred
+  }).always(function (valueOrError) {
+    // Executed whether or not the increment operation was successful
+  });
+
 
   var mockObj = {
     "request": {

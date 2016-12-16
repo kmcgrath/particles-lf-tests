@@ -17,11 +17,13 @@
     "formation"
   ],
   "dependencies": {
+    "aws-sdk": "^2.7.15",
     "condensation": "^0.5.8",
     "config": "^1.21.0",
     "gulp": "^3.9.1",
     "particles-core": "^0.4.6",
-    "particles-spotinst-lambda": "^0.1.0"
+    "particles-spotinst-lambda": "^0.1.0",
+    "shortid": "^2.2.6"
   },
   "devDependencies": {
     "condensation-particle-tests": "^0.5.2",
