@@ -12,7 +12,14 @@
 
 1. Run the Mock API stack - this uses SAM to be sure to enable capabilities and create a change set
 2. Run LambdaFormation stack - this creates the ARN for the lambda used by CloudFormation Custom Resource - use STAGE url from step 1
-3. Launch many mock elastigroups with the ARN from step 2
+3. Use runit.js to (or manually) launch many mock elastigroups with the ARN from step 2
+
+runit.js example:
+
+```
+node runit.js --runOnce=true --spotinstLambdaARN="arn:aws:lambda:us-east-1:XXXXXXXXXXXX:function:spotinst-lambda-SpotinstLambda-XXXXXXXXXXXX"
+```
+
 
 |region|Stack|Launch|
 |------|---------|------|---------|

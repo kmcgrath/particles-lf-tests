@@ -1,8 +1,18 @@
 var AWS = require("aws-sdk");
 var shortid = require("shortid");
+var rc = require("rc");
+
+
+var conf = require('rc')("runit", {
+  region: "us-east-1",
+  templateUrl: "https://s3.amazonaws.com/condensation-particles.us-east-1/particles-lf-tests/particles/cftemplates/spotinst/elastigroup.template.json",
+  spotinstLambdaARN: "",
+  runOnce: false
+});
+
 
 var cf = new AWS.CloudFormation({
-  region: "us-east-1"
+  region: conf.region
 });
 
 
@@ -25,11 +35,11 @@ var waitAndDelete = function(stackId) {
 var createStack = function() {
   cf.createStack({
     StackName: "mock-elastigroup-"+shortid.generate(),
-    TemplateURL: "https://s3.amazonaws.com/condensation-particles.us-east-1/particles-lf-tests/particles/cftemplates/spotinst/elastigroup.template.json",
+    TemplateURL: conf.templateUrl,
     Parameters: [
       {
         ParameterKey: "LambdaARN",
-        ParameterValue: "arn:aws:lambda:us-east-1:745968232654:function:spotinst-lambda-SpotinstLambda-MVNVKHJ4M5WQ"
+        ParameterValue: conf.spotinstLambdaARN
       }
     ]
   }, function(err,createData) {
@@ -42,7 +52,9 @@ var createStack = function() {
 };
 
 
-setInterval(createStack,5000);
-
-
-//createStack();
+if (conf.runOnce === "true") {
+  createStack();
+}
+else {
+  setInterval(createStack,5000);
+}
